@@ -935,10 +935,6 @@ html {
   margin: 48px 0 35px;
   height: calc(100vh - 48px - 35px);
   overflow: hidden;
-  -webkit-transition: -webkit-filter 0.25s linear;
-  transition: -webkit-filter 0.25s linear;
-  transition: filter 0.25s linear;
-  transition: filter 0.25s linear, -webkit-filter 0.25s linear;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
   -webkit-filter: blur(0);
@@ -1146,21 +1142,6 @@ html {
   .chart-container .chartContainer {
     background: transparent;
     min-height: 100%; }
-    .chart-container .chartContainer:before {
-      content: '';
-      position: absolute;
-      height: 100%;
-      width: 80px;
-      top: 0;
-      left: -2px;
-      pointer-events: none;
-      z-index: 2; }
-      .theme--light .chart-container .chartContainer:before {
-        background-image: -webkit-gradient(linear, left top, right top, from(white), to(rgba(255, 255, 255, 0)));
-        background-image: linear-gradient(to right, white, rgba(255, 255, 255, 0)); }
-      .theme--dark .chart-container .chartContainer:before {
-        background-image: -webkit-gradient(linear, left top, right top, from(#101320), to(rgba(16, 19, 32, 0)));
-        background-image: linear-gradient(to right, #101320, rgba(16, 19, 32, 0)); }
   @media (max-width: 768px) {
     .chart-container {
       height: 400px; }
@@ -1380,10 +1361,8 @@ html {
   height: 48px;
   width: 100%;
   top: 0;
-  -webkit-transition: opacity 0.3s, -webkit-filter 0.25s linear;
-  transition: opacity 0.3s, -webkit-filter 0.25s linear;
-  transition: opacity 0.3s, filter 0.25s linear;
-  transition: opacity 0.3s, filter 0.25s linear, -webkit-filter 0.25s linear;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
   -webkit-filter: blur(0);
@@ -1563,10 +1542,8 @@ html {
           justify-content: flex-end;
   -webkit-box-align: center;
           align-items: center;
-  -webkit-transition: opacity 0.3s, -webkit-filter 0.25s linear;
-  transition: opacity 0.3s, -webkit-filter 0.25s linear;
-  transition: opacity 0.3s, filter 0.25s linear;
-  transition: opacity 0.3s, filter 0.25s linear, -webkit-filter 0.25s linear;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
   -webkit-filter: blur(0);
@@ -5980,6 +5957,8 @@ html {
             fill: rgba(0, 0, 0, 0.16) !important; }
         .theme--light .btn-purchase--disabled .btn-purchase__info--left .btn-purchase__text, .theme--light .btn-purchase[disabled] .btn-purchase__info--left .btn-purchase__text {
           color: rgba(0, 0, 0, 0.16); }
+      .theme--light .btn-purchase--disabled .btn-purchase__info--right .btn-purchase__text, .theme--light .btn-purchase[disabled] .btn-purchase__info--right .btn-purchase__text {
+        color: rgba(0, 0, 0, 0.16); }
       .theme--light .btn-purchase--disabled .btn-purchase__effect-detail, .theme--light .btn-purchase[disabled] .btn-purchase__effect-detail {
         background: #d6d6d6; }
         .theme--light .btn-purchase--disabled .btn-purchase__effect-detail--arrow, .theme--light .btn-purchase[disabled] .btn-purchase__effect-detail--arrow {
@@ -6008,6 +5987,8 @@ html {
             fill: rgba(127, 131, 151, 0.3) !important; }
         .theme--dark .btn-purchase--disabled .btn-purchase__info--left .btn-purchase__text, .theme--dark .btn-purchase[disabled] .btn-purchase__info--left .btn-purchase__text {
           color: rgba(127, 131, 151, 0.3); }
+      .theme--dark .btn-purchase--disabled .btn-purchase__info--right .btn-purchase__text, .theme--dark .btn-purchase[disabled] .btn-purchase__info--right .btn-purchase__text {
+        color: rgba(127, 131, 151, 0.3); }
       .theme--dark .btn-purchase--disabled .btn-purchase__effect-detail, .theme--dark .btn-purchase[disabled] .btn-purchase__effect-detail {
         background: #303342; }
         .theme--dark .btn-purchase--disabled .btn-purchase__effect-detail--arrow, .theme--dark .btn-purchase[disabled] .btn-purchase__effect-detail--arrow {
@@ -6668,7 +6649,13 @@ html {
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0; }
+    bottom: 0;
+    -webkit-transition: opacity 0.15s linear;
+    transition: opacity 0.15s linear; }
+    .full-page-modal__background--enter, .full-page-modal__background--exit {
+      opacity: 0; }
+    .full-page-modal__background--enter-done {
+      opacity: 1; }
     .theme--light .full-page-modal__background {
       background-color: rgba(255, 255, 255, 0.56); }
     .theme--dark .full-page-modal__background {
@@ -6676,7 +6663,19 @@ html {
   .full-page-modal__wrapper {
     position: absolute;
     left: calc(100vw - 70%);
-    top: calc(100vh - 70%); }
+    top: calc(100vh - 70%);
+    -webkit-transition: opacity 0.15s linear, -webkit-transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: opacity 0.15s linear, -webkit-transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.15s linear;
+    transition: transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.15s linear, -webkit-transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1); }
+    .full-page-modal__wrapper--enter, .full-page-modal__wrapper--exit {
+      -webkit-transform: translate3d(0, 50px, 0);
+              transform: translate3d(0, 50px, 0);
+      opacity: 0; }
+    .full-page-modal__wrapper--enter-done {
+      -webkit-transform: translate3d(0, 0, 0);
+              transform: translate3d(0, 0, 0);
+      opacity: 1; }
   .full-page-modal__dialog {
     max-width: 560px;
     max-height: 320px;
@@ -8882,6 +8881,8 @@ html {
       height: 8px;
       margin: 6.5px 0; }
     .trade-container__price-info--fade .trade-container__price-info-value {
+      opacity: 0; }
+    .trade-container__price-info--fade .trade-container__price-info-movement {
       opacity: 0; }
     .trade-container__price-info-value {
       font-size: 1.4em;
