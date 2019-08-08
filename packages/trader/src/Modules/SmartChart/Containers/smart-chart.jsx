@@ -28,7 +28,7 @@ class Chart extends React.Component {
     topWidgets = () => (
         <TopWidgets
             InfoBox={this.props.InfoBox}
-            is_title_enabled={this.props.is_title_enabled}
+            is_title_enabled={true}
             onSymbolChange={symbolChange(this.props.onSymbolChange)}
         />
     );
@@ -69,9 +69,9 @@ class Chart extends React.Component {
                 isStaticChart={this.props.is_static_chart}
                 shouldFetchTradingTimes={!this.props.end_epoch}
             >
-                { this.props.markers_array.map((marker, idx) => (
+                { this.props.markers_array.map(marker => (
                     <ChartMarker
-                        key={idx}
+                        key={marker.id}
                         marker_config={marker.marker_config}
                         marker_content_props={marker.content_config}
                         is_bottom_widget_visible={this.props.should_show_bottom_widgets}
@@ -96,7 +96,7 @@ Chart.propTypes = {
     is_mobile                   : PropTypes.bool,
     is_socket_opened            : PropTypes.bool,
     is_static_chart             : PropTypes.bool,
-    is_title_enabled            : PropTypes.bool,
+    // is_title_enabled            : PropTypes.bool,
     margin                      : PropTypes.number,
     markers_array               : PropTypes.array,
     onMount                     : PropTypes.func,
@@ -128,9 +128,10 @@ export default connect(
         exportLayout        : modules.smart_chart.exportLayout,
         getChartStatus      : modules.smart_chart.getChartStatus,
         is_contract_mode    : modules.smart_chart.is_contract_mode,
-        is_title_enabled    : modules.smart_chart.is_title_enabled,
+        // is_title_enabled    : modules.smart_chart.is_title_enabled,
         margin              : modules.smart_chart.margin,
-        markers_array       : modules.smart_chart.markers_array,
+        // markers_array       : modules.smart_chart.markers_array,
+        markers_array       : modules.contract_trade.markers_array,
         onMount             : modules.smart_chart.onMount,
         onUnmount           : modules.smart_chart.onUnmount,
         settings            : modules.smart_chart.settings,

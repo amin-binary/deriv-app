@@ -1,7 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router';
-import { SmartChart } from 'smartcharts-beta';
+import { SmartChart, AssetInformation  } from 'smartcharts-beta';
 import { isEmptyObject } from '_common/utility';
 import ChartLoader       from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer    from 'App/Components/Elements/ContractDrawer';
@@ -13,8 +13,6 @@ import { connect }       from 'Stores/connect';
 // --------------------------
 import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.jsx';
 import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
-import TopWidgets              from '../../SmartChart/Components/top-widgets.jsx';
-import { symbolChange }        from '../../SmartChart/Helpers/symbol';
 
 // const SmartChart = React.lazy(() => import(/* webpackChunkName: "smart_chart" */'../../SmartChart'));
 
@@ -176,14 +174,13 @@ export default withRouter(connect(
 
 
 // -----------------------------------------
-
+//
 class Chart extends React.Component {
     topWidgets = () => (
-        <TopWidgets
-            InfoBox={this.props.InfoBox}
-            is_title_enabled={false}
-            onSymbolChange={symbolChange(this.props.onSymbolChange)}
-        />
+        <React.Fragment>
+            {this.props.InfoBox}
+            <AssetInformation />
+        </React.Fragment>
     );
 
     bottomWidgets = () => (
@@ -215,9 +212,9 @@ class Chart extends React.Component {
                 isStaticChart={this.props.is_static_chart}
                 shouldFetchTradingTimes={!this.props.end_epoch}
             >
-                { this.props.markers_array.map((marker, idx) => (
+                { this.props.markers_array.map(marker => (
                     <ChartMarker
-                        key={idx}
+                        key={marker.id}
                         marker_config={marker.marker_config}
                         marker_content_props={marker.content_config}
                         is_bottom_widget_visible={this.props.is_digit_contract}

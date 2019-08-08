@@ -9,6 +9,7 @@ export const MARKER_TYPES_CONFIG = {
         marker_config : {
             ContentComponent: MarkerLine,
             className       : 'chart-marker-line',
+            // threshold       : 5,
         },
         content_config: { line_style: 'dash',  label: localize('End Time') },
     },
@@ -25,6 +26,7 @@ export const MARKER_TYPES_CONFIG = {
         marker_config : {
             ContentComponent: MarkerLine,
             className       : 'chart-marker-line',
+            // threshold       : null,
         },
         content_config: { line_style: 'solid', label: localize('Start Time') },
     },
@@ -32,6 +34,7 @@ export const MARKER_TYPES_CONFIG = {
         type          : 'SPOT_ENTRY',
         marker_config : {
             ContentComponent: MarkerSpot,
+            // threshold       : 7,
         },
         content_config: { className: 'chart-spot__entry' },
     },
@@ -46,6 +49,7 @@ export const MARKER_TYPES_CONFIG = {
         type          : 'SPOT_EXIT',
         marker_config : {
             ContentComponent: MarkerSpotLabel,
+            // threshold       : 2,
         },
         content_config: { spot_className: 'chart-spot__spot' },
     },
@@ -53,6 +57,7 @@ export const MARKER_TYPES_CONFIG = {
         type          : 'SPOT_MIDDLE',
         marker_config : {
             ContentComponent: MarkerSpotLabel,
+            // threshold       : 18,
         },
         content_config: { spot_className: 'chart-spot__spot' },
     },

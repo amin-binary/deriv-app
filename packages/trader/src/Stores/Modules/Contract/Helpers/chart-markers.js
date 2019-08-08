@@ -17,6 +17,7 @@ export const createChartMarkers = (contract_info) => {
     if (contract_info) {
         const end_time = getEndTime(contract_info);
         const chart_type = getChartType(contract_info.date_start, end_time);
+        const contract_id = contract_info.contract_id;
 
         if (contract_info.tick_count) {
             const tick_markers = createTickMarkers(contract_info);
@@ -34,7 +35,13 @@ export const createChartMarkers = (contract_info) => {
         markers.push(...line_markers);
 
         markers = markers.filter(m => !!m);
+
+        markers.forEach(marker => {
+            // unique id for React
+            marker.id = `${contract_id}-${marker.type}`;
+        });
     }
+
 
     return markers;
 };

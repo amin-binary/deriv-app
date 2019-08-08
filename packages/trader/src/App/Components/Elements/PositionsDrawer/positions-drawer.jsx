@@ -25,7 +25,6 @@ class PositionsDrawer extends React.Component {
     render() {
         const {
             all_positions,
-            active_contract_id,
             error,
             currency,
             is_contract_mode,
@@ -57,7 +56,6 @@ class PositionsDrawer extends React.Component {
                             unmountOnExit
                         >
                             <PositionsDrawerCard
-                                active_position={active_contract_id}
                                 is_dark_theme={is_dark_theme}
                                 onClickSell={onClickSell}
                                 onClickRemove={onClickRemove}
@@ -109,7 +107,6 @@ class PositionsDrawer extends React.Component {
 }
 
 PositionsDrawer.propTypes = {
-    active_contract_id    : PropTypes.number,
     all_positions         : MobxPropTypes.arrayOrObservableArray,
     children              : PropTypes.any,
     currency              : PropTypes.string,
@@ -129,7 +126,6 @@ PositionsDrawer.propTypes = {
 export default connect(
     ({ modules, client, ui }) => ({
         currency                      : client.currency,
-        active_contract_id            : modules.contract_trade.contract_id,
         all_positions                 : modules.portfolio.all_positions,
         error                         : modules.portfolio.error,
         is_contract_mode              : modules.smart_chart.is_contract_mode,

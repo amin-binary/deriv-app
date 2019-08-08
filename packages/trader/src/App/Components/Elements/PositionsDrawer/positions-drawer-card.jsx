@@ -3,7 +3,6 @@ import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { CSSTransition }       from 'react-transition-group';
 import { NavLink }             from 'react-router-dom';
-import ContractLink            from 'Modules/Contract/Containers/contract-link.jsx';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
 import { isCryptocurrency }    from '_common/base/currency_base';
 import { localize }            from 'App/i18n';
@@ -17,7 +16,6 @@ import ProgressSlider          from './ProgressSlider';
 import ResultOverlay           from './result-overlay.jsx';
 
 const PositionsDrawerCard = ({
-    active_position,
     className,
     contract_info,
     currency,
@@ -164,7 +162,7 @@ const PositionsDrawerCard = ({
     return (
         <div className={classNames(
             'positions-drawer-card__wrapper', {
-                'positions-drawer-card__wrapper--active': (parseInt(active_position) === id),
+                'positions-drawer-card__wrapper--active': true,
             },
             className)}
         >
@@ -172,7 +170,6 @@ const PositionsDrawerCard = ({
                 contract_id={id}
                 is_unsupported={is_unsupported}
                 is_visible={!!(contract_info.is_sold)}
-                has_same_contract_mounted={id === parseInt(active_position)}
                 onClickRemove={onClickRemove}
                 onClick={() => toggleUnsupportedContractModal(true)}
                 result={(result || fallback_result)}
@@ -181,7 +178,7 @@ const PositionsDrawerCard = ({
                 <div
                     className={classNames(
                         'positions-drawer-card', {
-                            'positions-drawer-card--active': (parseInt(active_position) === id),
+                            'positions-drawer-card--active': true,
                             'positions-drawer-card--green' : (profit_loss > 0) && !result,
                             'positions-drawer-card--red'   : (profit_loss < 0) && !result,
                         }
@@ -194,7 +191,7 @@ const PositionsDrawerCard = ({
                 <NavLink
                     className={classNames(
                         'positions-drawer-card', {
-                            'positions-drawer-card--active': (parseInt(active_position) === id),
+                            'positions-drawer-card--active': true,
                             'positions-drawer-card--green' : (profit_loss > 0) && !result,
                             'positions-drawer-card--red'   : (profit_loss < 0) && !result,
                         }
@@ -238,10 +235,6 @@ const PositionsDrawerCard = ({
 };
 
 PositionsDrawerCard.propTypes = {
-    active_position: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
     className                     : PropTypes.string,
     contract_info                 : PropTypes.object,
     currency                      : PropTypes.string,

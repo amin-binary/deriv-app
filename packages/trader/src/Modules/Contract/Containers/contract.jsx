@@ -9,10 +9,6 @@ import { connect }       from 'Stores/connect';
 import ContractReplay    from './contract-replay.jsx';
 
 class Contract extends React.Component {
-    componentWillUnmount() {
-        if (this.props.has_error) this.props.clearError();
-    }
-
     render () {
         return (
             <React.Fragment>
@@ -58,7 +54,6 @@ Contract.propTypes = {
 
 export default withRouter(connect(
     ({ modules, ui }) => ({
-        clearError   : modules.contract_replay.clearError,
         error_message: modules.contract_replay.error_message,
         has_error    : modules.contract_replay.has_error,
         is_mobile    : ui.is_mobile,

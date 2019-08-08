@@ -30,10 +30,12 @@ const ChartMarker = ({
             });
         }
     };
+    const threshold = marker_props.threshold || null;
 
     return (
         <FastMarker
             markerRef={onRef}
+            threshold={threshold}
         >
             <ContentComponent {...toJS(marker_content_props)} />
         </FastMarker>

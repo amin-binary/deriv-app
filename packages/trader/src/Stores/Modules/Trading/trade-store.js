@@ -332,9 +332,12 @@ export default class TradeStore extends BaseStore {
                         // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,
                         // and then set the chart view to the start_time
                         this.smart_chart.setChartView(start_time);
+
                         // draw the start time line and show longcode then mount contract
                         this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
-                        this.root_store.ui.openPositionsDrawer();
+
+                        this.root_store.modules.contract_trade.trackContract(contract_id, start_time, longcode);
+                        // this.root_store.ui.openPositionsDrawer();
                     }
                     this.root_store.gtm.pushPurchaseData(contract_data);
                 } else if (response.error) {

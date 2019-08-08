@@ -1,4 +1,5 @@
 import {
+    toJS,
     action,
     computed,
     extendObservable,
@@ -9,6 +10,7 @@ import { localize }           from 'App/i18n';
 import { WS }                 from 'Services';
 import { createChartBarrier } from './Helpers/chart-barriers';
 import { createChartMarkers } from './Helpers/chart-markers';
+import ContractReplayStore    from './contract-replay-store';
 import {
     getDigitInfo,
     isDigitContract }         from './Helpers/digits';
@@ -30,7 +32,6 @@ export default class ContractTradeStore extends BaseStore {
     @observable error_message = '';
 
     // ---- Normal properties ---
-    is_from_positions   = false;
     is_ongoing_contract = false;
 
     // Forget old proposal_open_contract stream on account switch from ErrorComponent
@@ -58,7 +59,8 @@ export default class ContractTradeStore extends BaseStore {
         if (!end_time) this.is_ongoing_contract = true;
 
         // finish contracts if end_time exists
-        if (end_time) {
+        // TODO: fix
+        if (end_time && false) {
             const is_one_tick_contract = (tick_count < 2);
             if (!this.is_ongoing_contract && !is_one_tick_contract) {
                 // set to static chart to true for non one tick contract
@@ -74,10 +76,6 @@ export default class ContractTradeStore extends BaseStore {
             if (!this.is_ongoing_contract) {
                 this.smart_chart.setIsChartLoading(false);
             }
-
-        // setters for ongoing contracts, will only init once onMount after left_epoch is set
-        } else if (this.is_from_positions) {
-            this.smart_chart.setContractStart(date_start);
         }
 
         this.smart_chart.updateMargin((end_time || date_expiry) - date_start);
@@ -108,6 +106,26 @@ export default class ContractTradeStore extends BaseStore {
         }
     }
 
+    @observable contracts = [];
+
+    @action.bound
+    trackContract(contract_id, date_start, longcode) {
+        const contract = new ContractReplayStore({
+            root_store: this.root_store
+        });
+        contract.onMount(contract_id);
+        contract.markers_array = createChartMarkers({ date_start });
+        this.contracts.push(contract);
+    }
+
+    @computed get markers_array() {
+        return this.contracts.reduce((array, contract) => {
+            const markers = toJS(contract.markers_array); 
+            array.push(...markers);
+            return array;
+        }, []);
+    }
+
     @action.bound
     drawContractStartTime(date_start, longcode, contract_id) {
         this.contract_info.longcode = longcode;
@@ -118,11 +136,7 @@ export default class ContractTradeStore extends BaseStore {
                 smart_chart.createMarker(marker);
             }
         });
-        this.onMountBuy(contract_id);
-    }
 
-    @action.bound
-    onMountBuy(contract_id) {
         if (contract_id === this.contract_id) return;
         this.contract_id = contract_id;
         // clear proposal and purchase info once contract is mounted
@@ -134,31 +148,6 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    onMount(contract_id, is_from_positions) {
-        if (contract_id === this.contract_id) return;
-        this.smart_chart       = this.root_store.modules.smart_chart;
-        if (this.smart_chart.is_contract_mode) this.onCloseContract();
-        this.has_error         = false;
-        this.error_message     = '';
-        this.contract_id       = contract_id;
-        this.is_from_positions = is_from_positions;
-
-        // clear proposal and purchase info once contract is mounted
-        this.root_store.modules.trade.proposal_info = {};
-        this.root_store.modules.trade.purchase_info = {};
-
-        if (contract_id) {
-            if (this.is_from_positions) {
-                this.smart_chart.setIsChartLoading(true);
-                this.smart_chart.switchToContractMode(true);
-            }
-            BinarySocket.wait('authorize').then(() => {
-                this.handleSubscribeProposalOpenContract(this.contract_id, this.updateProposal);
-            });
-        }
-    }
-
-    @action.bound
     onCloseContract() {
         this.forgetProposalOpenContract(this.contract_id, this.updateProposal);
         this.contract_id         = null;
@@ -166,7 +155,6 @@ export default class ContractTradeStore extends BaseStore {
         this.digits_info         = {};
         this.error_message       = '';
         this.has_error           = false;
-        this.is_from_positions   = false;
         this.is_ongoing_contract = false;
 
         if (!this.smart_chart) this.smart_chart = this.root_store.modules.smart_chart;
@@ -176,6 +164,8 @@ export default class ContractTradeStore extends BaseStore {
 
     @action.bound
     onUnmount() {
+        this.contracts.forEach(contract => contract.onUnmount());
+        console.warn('contract-trade-store.onUnmount');
         this.disposeSwitchAccount();
         this.onCloseContract();
     }

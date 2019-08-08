@@ -44,13 +44,10 @@ export default class SmartChartStore extends BaseStore {
     trade_chart_type                 = null;
 
     @action.bound
-    switchToContractMode(is_from_positions = false, granularity = 0, chart_type = 'mountain') {
+    switchToContractMode(granularity = 0, chart_type = 'mountain') {
+        // console.warn('smart-chart-store.switchToContractMode');
         this.saveAndClearTradeChartLayout('contract');
         this.setContractMode(true);
-        if (!is_from_positions) {
-            this.updateGranularity(granularity);
-            this.updateChartType(chart_type);
-        }
     }
 
     @action.bound
@@ -79,16 +76,6 @@ export default class SmartChartStore extends BaseStore {
     }
 
     @action.bound
-    updateEpochScrollToValue(epoch) {
-        this.scroll_to_left_epoch = epoch;
-    }
-
-    @action.bound
-    updateEpochScrollToOffset(offset) {
-        this.scroll_to_left_epoch_offset = offset;
-    }
-
-    @action.bound
     cleanupContractChartView() {
         this.margin = null;
         this.removeBarriers();
@@ -109,12 +96,13 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     setContractMode(is_contract_mode) {
-        this.is_contract_mode = is_contract_mode;
-        this.is_title_enabled = !is_contract_mode;
+        // this.is_contract_mode = is_contract_mode;
+        // this.is_title_enabled = !is_contract_mode;
     }
 
     @action.bound
     onMount = () => {
+        // console.warn('smat-chart-store.onMount', this.trade_chart_layout);
         // remove any barriers and markers before chart is ready
         if (this.trade_chart_layout && !isEmptyObject(this.trade_chart_layout)) {
             this.applySavedTradeChartLayout();
@@ -123,6 +111,7 @@ export default class SmartChartStore extends BaseStore {
 
     @action.bound
     onUnmount = () => {
+        // console.warn('smat-chart-store.onUnmount');
         this.symbol = null;
         this.trade_chart_layout = null;
         this.should_import_layout = false;
@@ -133,8 +122,8 @@ export default class SmartChartStore extends BaseStore {
     // --------- Set Contract Scroll to Left ---------
     @action.bound
     setChartView(scroll_to_left_epoch) {
-        this.updateEpochScrollToOffset(1);
-        this.updateEpochScrollToValue(scroll_to_left_epoch);
+        // this.scroll_to_left_epoch = scroll_to_left_epoch;
+        // this.scroll_to_left_epoch_offset = 1;
     }
 
     // --------- All Contracts ---------
@@ -239,7 +228,7 @@ export default class SmartChartStore extends BaseStore {
     @action.bound
     exportLayout(layout) {
         this.trade_chart_layout = layout;
-        this.should_clear_chart = true;
+        // this.should_clear_chart = true;
     }
 
     @action.bound

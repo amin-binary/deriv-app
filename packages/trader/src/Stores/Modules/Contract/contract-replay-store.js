@@ -104,6 +104,8 @@ export default class ContractReplayStore extends BaseStore {
         this.prev_indicative     = 0;
         this.indicative          = 0;
         this.sell_info           = {};
+        this.error_message = null;
+        this.has_error = false;
     }
 
     @action.bound
@@ -216,12 +218,6 @@ export default class ContractReplayStore extends BaseStore {
     @action.bound
     removeErrorMessage() {
         delete this.error_message;
-    }
-
-    @action.bound
-    clearError() {
-        this.error_message = null;
-        this.has_error = false;
     }
 
     createBarriersArray = (contract_info, is_dark_mode) => {
